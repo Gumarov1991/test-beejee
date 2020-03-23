@@ -2,27 +2,37 @@ jQuery(document).ready(function ($) {
 //Вешаем обработчик на кнопку редактировать
     $('.edit-task').click(function (e) {
         e.preventDefault()
-        let editBtn = $(this),
+
+        let allEditBtn = $('.edit-task'),
+            thisEditBtn = $(this),
+            otherEditBtn = allEditBtn.not(thisEditBtn),
             cellAdmActions = $(this).parent(),
-            id = editBtn.attr('data-id'),
+            id = thisEditBtn.attr('data-id'),
             cellForText = cellAdmActions.siblings('.task-text'),
             cellWidth = cellForText.width(),
             cellHeight = cellForText.height(),
             text = cellForText.html(),
             textarea = $('<textarea name="text" value="">'),
-            saveBtn = $('<a class="save-task" href="#"">Сохранить</a>'),
+            saveBtn = $('<a class="save-task" href="#"">Сохранить</a><br>'),
+            cancelBtn = $('<a class="cancel-task" href="#"">Отмена</a>'),
             inputReady = $('<input type="checkbox" name="is_ready">'),
             cellStatus = cellAdmActions.siblings('.col-status'),
+            cellStatusHTML = cellStatus.html(),
             cellStatusIsready = cellStatus.children('.is-ready'),
             iconStatus = cellStatusIsready.children('i')
+
+
+
+//Делаем другие кнопки редактировать неактивными
+        otherEditBtn.addClass('disabled-link')
 
 //Задаем значение, высоту и ширину для textarea
         textarea.val(text).width(cellWidth).height(cellHeight)
         cellForText.html(textarea)
 
 //Прячем кнопку редактировать и добавляем сохранить
-        editBtn.hide()
-        cellAdmActions.append(saveBtn)
+        thisEditBtn.hide()
+        cellAdmActions.append(saveBtn).append(cancelBtn)
 
 //Прячем иконку статуса выполнения и добавляем чекбокс для настройки
         if (iconStatus.hasClass('status-ready')) {
@@ -34,6 +44,8 @@ jQuery(document).ready(function ($) {
 //Вешаем обработчик на кнопку сохранить
         saveBtn.click(function (e) {
             e.preventDefault()
+
+            otherEditBtn.removeClass('disabled-link')
 
             let isReady = inputReady.prop('checked') ? 1 : 0,
                 data = {
@@ -59,7 +71,8 @@ jQuery(document).ready(function ($) {
                         cellForText.html(task.text)
                         cellStatus.html(htmlStatus)
                         saveBtn.remove()
-                        editBtn.show()
+                        cancelBtn.remove()
+                        thisEditBtn.show()
                         Swal.fire({
                             icon: 'success',
                             title: data.message,
@@ -82,6 +95,19 @@ jQuery(document).ready(function ($) {
                     }
                 }
             })
+        })
+
+//Вешаем обработчик на кнопку отмена
+        cancelBtn.click(function (e) {
+            e.preventDefault()
+
+            otherEditBtn.removeClass('disabled-link')
+            cellForText.html(text)
+            cellStatus.html(cellStatusHTML)
+            saveBtn.remove()
+            cancelBtn.remove()
+            thisEditBtn.show()
+
         })
     })
 

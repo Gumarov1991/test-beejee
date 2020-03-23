@@ -80,7 +80,6 @@
                     <?php if (\App\Models\User::isAdmin()) : ?>
                         <td class="admin-actions">
                             <a class="edit-task" data-id="<?php echo $task['id']; ?>" href="#">Редатировать</a>
-<!--                            <a class="rm-task" href="/beejee/task/remove/--><?php //echo $task['id']; ?><!--">Удалить</a>-->
                         </td>
                     <?php endif; ?>
                 </tr>

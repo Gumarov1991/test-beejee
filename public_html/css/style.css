@@ -76,6 +76,11 @@ input[type='submit'] {
     left: 0;
 }
 
+.disabled-link {
+    pointer-events: none;
+    color: #5a625e;
+}
+
 .pagination {
     display: flex;
     margin-bottom: 25px;
